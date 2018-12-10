@@ -62,4 +62,6 @@ gulp.task('watch', function () {
 	gulp.watch(jsFiles, ['js']);
 });
 
+gulp.task('build', ['css', 'js']);
+
 gulp.task('default', ['css', 'js', 'watch']);
