@@ -322,6 +322,7 @@
 
 .post__content span.checkmark {
     font-size: 1.8rem;
+    font-weight: 600;
     text-align: center;
     display: block;
 }
@@ -331,7 +332,7 @@
 }
 
 .post__content span.checkmark.red {
-    color: red;
+    color: #3d7d3d;
 }
 
 /* Post-specific styles ****************************/
@@ -478,12 +479,14 @@ ul.dom-tree li span {
         background-color: $colour-bg;
         opacity: 0;
 
+        transform: translate(-9999px, -9999px);
         transition: opacity 0.5s;
     }
 }
 
 #save:hover .label,
 #save:focus .label {
+    transform: none;
     opacity: 1;
 }
 

@@ -1,5 +1,5 @@
 // Set a name for the current cache
-const precacheVersion = 1;
+const precacheVersion = 2;
 const precacheName = 'precache-v' + precacheVersion;
 
 // Default files to always cache
