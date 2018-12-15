@@ -44,7 +44,7 @@ SearchGhost.prototype.searchPosts = function (query) {
 
     this.posts.forEach((post) => {
         const titleMatch = post.title.match(regex);
-        const tagsMatch = post.tags.some((tag) => tag.name.match(regex));
+        const tagsMatch = post.tags ? post.tags.some((tag) => tag.name.match(regex)) : false;
         const contentMatch = post.html.match(regex);
 
         if (titleMatch) priority1.push(post);
