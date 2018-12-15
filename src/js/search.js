@@ -39,8 +39,8 @@ SearchGhost.prototype.searchPosts = function (query) {
     const regex = new RegExp(query, "gi");
     
     const priority1 = [];
-    const priroty2 = [];
-    const priroty3 = [];
+    const priority2 = [];
+    const priority3 = [];
 
     this.posts.forEach((post) => {
         const titleMatch = post.title.match(regex);
@@ -52,7 +52,7 @@ SearchGhost.prototype.searchPosts = function (query) {
         else if (contentMatch) return priroty3.push(post);
     });
 
-    return [ ...priority1, ...priroty2, ...priroty3 ];
+    return [ ...priority1, ...priority2, ...priority3 ];
 };
 
 SearchGhost.prototype.buildPostExcerpt = function (post, query) {
