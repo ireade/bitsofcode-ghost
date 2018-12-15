@@ -80,7 +80,7 @@ SearchGhost.prototype.buildPostExcerpt = function (post, query) {
     }
 
     function getTags(tags) {
-        if (tags.length == 0) return "";
+        if (!tags || tags.length == 0) return "";
         return `<em>
             ${tags.map((tag) => ` <a href="/tag/${tag.slug}">${highlightQuery(tag.name)}</a>`)}
         </em>`;
