@@ -37,8 +37,7 @@ SearchGhost.prototype.getPosts = function () {
 
 SearchGhost.prototype.searchPosts = function (query) {
     const regex = new RegExp(query, "gi");
-    const relevantPosts = [];
-
+    
     const priority1 = [];
     const priroty2 = [];
     const priroty3 = [];
