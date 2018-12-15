@@ -1,0 +1,23 @@
+.search-form {
+    display: block
+}
+
+.search-form__input {
+    height: 40px;
+    width: 100%;
+    display: block;
+    -webkit-appearance: none;
+    border: 0;
+    border-radius: 3px;
+    border: 2px solid #e6e6e6;
+    font-family: $font-family;
+    font-size: 1.5rem;
+    padding-left: 10px;
+    padding-right: 10px;
+    outline: none;
+}
+
+.search-form__input:focus,
+.search-form__input:active {
+    border-color: $colour-theme;
+}

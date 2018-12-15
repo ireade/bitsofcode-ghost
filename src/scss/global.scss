@@ -9,6 +9,7 @@
 @import "ads";
 @import "syntax-highlighting";
 @import "subscribe";
+@import "form";
 
 
 .social ul {
@@ -56,23 +57,7 @@
     display: none
 }
 
-.search-form {
-    display: block
-}
 
-.search-form__input {
-    height: 40px;
-    width: 100%;
-    display: block;
-    -webkit-appearance: none;
-    border: 0;
-    border-radius: 3px;
-    border: 2px solid #e6e6e6;
-    font-family: $font-family;
-    font-size: 1.5rem;
-    padding-left: 10px;
-    padding-right: 10px
-}
 
 .message--count {
     display: block

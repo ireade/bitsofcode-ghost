@@ -1,87 +1,134 @@
-const searchFormEl = document.getElementById("search-form");
-const searchResultsEl = document.getElementById("search-results");
-const searchResultsMessageEl = document.getElementById("search-results-message");
+function SearchGhost(options) {
 
-const get = function (e) {
-    return new Promise(function (t, s) {
-        var n = new XMLHttpRequest;
-        n.open("GET", e), n.onload = function () {
-            200 == n.status ? t(JSON.parse(n.response)) : s(Error(n.statusText))
-        }, n.onerror = function () {
-            s(Error("Network Error"))
-        }, n.send()
-    })
-};
+    this.searchForm = options.searchForm;
+    this.messageEl = options.messageEl;
+    this.resultsEl = options.resultsEl;
 
-const createExcerptEl = function (e) {
-    function getExcerpt(e) {
-        var t = e;
-        return t = t.replace(/<(?:.|\n)*?>/gm, ""), t = t.substring(0, 300)
+    this.getPosts().catch(() => {
+        this.messageEl.classList.remove("message--default");
+        this.messageEl.classList.add("message--danger");
+        this.messageEl.textContent = `Unable to fetch posts to search.`;
+    });
+
+    this.searchForm.addEventListener("submit", this.onSubmit.bind(this));
+}
+
+SearchGhost.prototype.getPosts = function () {
+    function get(url) {
+        return new Promise(function (resolve, reject) {
+            var req = new XMLHttpRequest();
+            req.open('GET', url);
+            req.onload = function () {
+                req.status == 200 ? resolve(JSON.parse(req.response)) : reject(Error(req.statusText))
+            };
+            req.onerror = function () { reject(Error("Network Error")); };
+            req.send();
+        });
     }
 
-    function getPrettyDate(e) {
-        var t = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-            s = e.split("T")[0],
-            n = s.split("-")[0],
-            o = t[parseInt(s.split("-")[1]) - 1],
-            r = s.split("-")[2];
-        return o + " " + r + ", " + n
+    const url = ghost.url.api("posts", {
+        limit: "all",
+        include: "tags",
+        fields: "title,published_at,html,url,slug"
+    });
+
+    return get(url).then((res) => this.posts = res.posts)
+};
+
+SearchGhost.prototype.searchPosts = function (query) {
+    const regex = new RegExp(query, "gi");
+    const relevantPosts = [];
+
+    const priority1 = [];
+    const priroty2 = [];
+    const priroty3 = [];
+
+    this.posts.forEach((post) => {
+        const titleMatch = post.title.match(regex);
+        const tagsMatch = post.tags.some((tag) => tag.name.match(regex));
+        const contentMatch = post.html.match(regex);
+
+        if (titleMatch) priority1.push(post);
+        else if (tagsMatch) return priroty2.push(post);
+        else if (contentMatch) return priroty3.push(post);
+    });
+
+    return [ ...priority1, ...priroty2, ...priroty3 ];
+};
+
+SearchGhost.prototype.buildPostExcerpt = function (post, query) {
+
+    function highlightQuery(string) {
+        const regex = new RegExp(query, "gi");
+        return string.replace(regex, (match) => `<mark>${match}</mark>`);
+    }
+
+    function getExcerpt(html) {
+        const cleanHTML = html.replace(/<(?:.|\n)*?>/gm, "");
+        const excerpt = highlightQuery(cleanHTML.substring(0, 300));
+        return excerpt + "...";
+    }
+
+    function getPrettyDate(published_at) {
+        const prettyMonths = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+        const date = published_at.split("T")[0];
+        const year = date.split("-")[0];
+        const month = prettyMonths[parseInt(date.split("-")[1]) - 1];
+        const day = date.split("-")[2];
+
+        return `<em>${month} ${day}, ${year}</em>`;
+    }
+
+    function getTags(tags) {
+        if (tags.length == 0) return "";
+        return `<em>
+            ${tags.map((tag) => ` <a href="/tag/${tag.slug}">${highlightQuery(tag.name)}</a>`)}
+        </em>`;
     }
 
     return `
     <article class="excerpt m-b-md p-b-md">
         <header class="excerpt__header m-b-sm">
             <h2 class="excerpt__title h2 no-ul">
-                <a href="${e.url}">${e.title}</a>
+                <a href="${post.url}">${highlightQuery(post.title)}</a>
             </h2>
             <div class="post__meta">
-                <em>${getPrettyDate(e.published_at)}</em>
+                ${getPrettyDate(post.published_at)}
+                ${getTags(post.tags)}
             </div>
         </header>
-    
         <div class="excerpt__body">
-            ${getExcerpt(e.html)}...
+            ${getExcerpt(post.html)}
         </div>
     </article>`;
 };
 
-const getPosts = function (e) {
+SearchGhost.prototype.onSubmit = function (e) {
 
-    function filterArticles(t) {
-        var s = [];
-        return t.forEach(function (t) {
-            t.title.toLowerCase().indexOf(e.toLowerCase()) > -1 && s.push(t)
-        }), s
-    }
-
-    function updatePage(e) {
-        var excerpts = filterArticles(e.posts).map((post) => createExcerptEl(post))
-        
-        searchResultsMessageEl.classList.remove("message--default");
-        searchResultsMessageEl.classList.add("message--count");
-        searchResultsMessageEl.innerHTML = `<span>${excerpts.length} posts</span> were found.`;
-
-        searchResultsEl.insertAdjacentHTML("beforeend", excerpts.join(""));
-    }
-
-    function handleError(e) {
-        searchResultsMessageEl.classList.remove("message--default");
-        searchResultsMessageEl.classList.add("message--error");
-        searchResultsMessageEl.textContent = `Oops! There was an error searching for "${e}"`;
-    }
-
-    var options = {
-        limit: "all",
-        include: "tags"
-    };
-    get(ghost.url.api("posts", options)).then(updatePage).catch(handleError);
-};
-
-searchFormEl.addEventListener("submit", function (e) {
     e.preventDefault();
-    
-    searchResultsMessageEl.textContent = 'Searching...';
 
-    const searchText = document.getElementById("search-form__input").value;
-    if (searchText) getPosts(searchText);
+    const query = e.target.querySelector("[name='query']").value;
+
+    if (!query) {
+        this.messageEl.textContent = "Please enter a search query";
+        return false;
+    }
+
+    this.messageEl.textContent = `Searching for posts related to "${query}"...`;
+
+    const relevantPosts = this.searchPosts(query);
+    const postExcerpts = relevantPosts.map((post) => this.buildPostExcerpt(post, query)).join("");
+
+    this.messageEl.classList.remove("message--default");
+    this.messageEl.classList.add("message--count");
+    this.messageEl.innerHTML = `<span>${relevantPosts.length} posts</span> were found.`;
+
+    this.resultsEl.innerHTML = postExcerpts;
+}
+
+new SearchGhost({
+    searchForm: document.getElementById("search-form"),
+    messageEl: document.getElementById("search-results-message"),
+    resultsEl: document.getElementById("search-results")
 });

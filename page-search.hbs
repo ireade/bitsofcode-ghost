@@ -5,21 +5,22 @@
         <h1 class="post__title h1">Search</h1>
     </header>
 
-    <div class="post__content page__content m-b-lg">
+    <div class="m-b-lg">
         <noscript>
             <p class="fs-i"><strong>Unfortunately</strong>, search on this blog's host requires JavaScript to be enabled.</p>
             <br>
         </noscript>
 
         <form class="search-form m-b-md" id="search-form" action="/search" method="get">
-            <label for="search-form__input" class="sr-only">Search Term</label>
-            <input type="search" class="search-form__input" id="search-form__input" name="q" placeholder="What are you looking for?">
+            <label for="query" class="sr-only">Search Term</label>
+            <input type="search" class="search-form__input" id="query" name="query" placeholder="What are you looking for?">
         </form>
 
-        <section id="search-results" role="region">
-            <span id="search-results-message" class="message--default" aria-live="polite">
-                Use the <a href="#search-form">search form</a> above to search for articles.
-            </span>
+        <span id="search-results-message" class="message--default" aria-live="polite">
+            Use the <a href="#search-form">search form</a> above to search for articles.
+        </span>
+
+        <section id="search-results" class="m-t-lg" role="region">
         </section>
     </div>
 </article>
