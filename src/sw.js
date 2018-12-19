@@ -51,8 +51,13 @@ self.addEventListener('fetch', (e) => {
         }
 
         return fetch(e.request)
-          .then((fetchResponse) => fetchResponse)
+          .then((fetchResponse) => {
+            if (fetchResponse.ok) return fetchResponse;
+
+            // If failed fetch
+          })
           .catch((err) => {
+            // If offline
             const isHTMLPage = e.request.method === "GET" && e.request.headers.get("accept").includes("text/html");
             if (isHTMLPage) return caches.match("/offline/");
           })

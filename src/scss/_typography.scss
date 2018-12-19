@@ -1,29 +1,16 @@
-html {
-    font-size: 62.5%
-}
-
 body {
     font-size: 1.5rem;
     line-height: 1.6;
     font-family: $font-family;
-    font-weight: 300
-}
-
-a {
-    text-decoration: underline;
-    color: inherit
+    font-weight: 300;
 }
 
 small {
-    font-size: 1.3rem
+    font-size: 1.3rem;
 }
 
 strong {
-    font-weight: 600
-}
-
-em {
-    font-style: italic
+    font-weight: $font-weight-bold;
 }
 
 mark {
@@ -32,29 +19,29 @@ mark {
 
 .h1 {
     font-size: 2.6rem;
-    font-weight: 600
+    font-weight: $font-weight-bold;
 }
 
 .h2,
 .post__content h2 {
     font-size: 2.3rem;
-    font-weight: 600
+    font-weight: $font-weight-bold;
 }
 
 .h3,
 .post__content h3 {
     font-size: 1.9rem;
-    font-weight: 600
+    font-weight: $font-weight-bold;
 }
 
 .h4,
 .post__content h4 {
     font-size: 1.8rem;
-    font-weight: 600
+    font-weight: $font-weight-bold;
 }
 
 .focus--theme {
-    outline: 0
+    outline: 0;
 }
 
 .focus--theme:focus,

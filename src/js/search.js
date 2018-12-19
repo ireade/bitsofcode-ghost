@@ -48,8 +48,8 @@ SearchGhost.prototype.searchPosts = function (query) {
         const contentMatch = post.html.match(regex);
 
         if (titleMatch) priority1.push(post);
-        else if (tagsMatch) return priroty2.push(post);
-        else if (contentMatch) return priroty3.push(post);
+        else if (tagsMatch) return priority2.push(post);
+        else if (contentMatch) return priority3.push(post);
     });
 
     return [ ...priority1, ...priority2, ...priority3 ];
