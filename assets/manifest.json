@@ -6,9 +6,9 @@
   "background_color": "#f5f5f5",
   "display": "standalone",
   "orientation": "portrait",
-  "start_url": "./",
+  "start_url": "/",
   "lang": "en-US",
-  "scope": "./",
+  "scope": "/",
   "icons": [
     {
       "src": "/assets/icons/icon_32.png",
