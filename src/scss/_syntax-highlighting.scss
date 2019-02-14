@@ -73,7 +73,7 @@ pre[class*=language-]::selection {
 .token.comment,
 .token.doctype,
 .token.prolog {
-    color: #787878
+    color: rgba(255, 255, 255, 0.55);
 }
 
 .token.punctuation {
