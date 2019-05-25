@@ -8,12 +8,12 @@ console.log("New version: ", newVersionNumber)
 replace({
     regex: /version([\s\S]*?),/,
     replacement: "version\": \"" + newVersionNumber + "\",",
-    paths: ['package.json', 'package-lock.json'],
+    paths: ['package.json'],
     recursive: true,
     silent: true
 });
 
-var regexExcludes = ['README.md', 'node_modules', 'src', 'gulpfile.js', 'release.js', '.gitignore', '.git'];
+var regexExcludes = ['README.md', 'node_modules', 'src', 'gulpfile.js', 'release.js', '.gitignore', '.git', 'package-lock.json'];
 smartZip.zip('./', 'bitsofcode-ghost.zip', false, regexExcludes, function (error) {
     if (error) {
         throw error;

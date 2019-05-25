@@ -1,8 +1,6 @@
-// Set a name for the current cache
 const precacheVersion = 2;
 const precacheName = 'precache-v' + precacheVersion;
 
-// Default files to always cache
 var precacheFiles = [
   "/assets/images/profile.png",
   "/assets/images/profile.webp",
@@ -41,6 +39,12 @@ self.addEventListener('activate', (e) => {
 });
 
 self.addEventListener('fetch', (e) => {
+
+  if (!e.request.url.includes(e.request.referrer)) {
+    e.respondWith(fetch(e.request));
+    return;
+  }
+
   e.respondWith(
     caches.match(e.request)
       .then((response) => {
@@ -51,14 +55,12 @@ self.addEventListener('fetch', (e) => {
         }
 
         return fetch(e.request)
-          .then((fetchResponse) => {
-            return fetchResponse;
-          })
+          .then((fetchResponse) => fetchResponse)
           .catch((err) => {
             // If offline
             const isHTMLPage = e.request.method === "GET" && e.request.headers.get("accept").includes("text/html");
             if (isHTMLPage) return caches.match("/offline/");
-          })
+          });
 
       }) // end caches.match(e.request)
   ); // end e.respondWith
