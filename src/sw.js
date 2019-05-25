@@ -52,9 +52,7 @@ self.addEventListener('fetch', (e) => {
 
         return fetch(e.request)
           .then((fetchResponse) => {
-            if (fetchResponse.ok) return fetchResponse;
-
-            // If failed fetch
+            return fetchResponse;
           })
           .catch((err) => {
             // If offline
