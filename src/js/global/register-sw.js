@@ -1,6 +1,6 @@
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-        navigator.serviceWorker.register("/sw.js", {scope: "/"})
+        navigator.serviceWorker.register("/sw.js?refresh=true", {scope: "/"})
             .then((registration) => {
                 console.log("Yay service worker registered!");
                 if (registration.waiting) registration.update();
