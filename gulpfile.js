@@ -53,7 +53,7 @@ gulp.task('js', function () {
 		.pipe(uglify())
 		.pipe(gulp.dest('assets/built'));
 
-	gulp.src('src/sw.js')
+  gulp.src('src/sw.js')
 		.pipe(gulp.dest(''));
 });
 

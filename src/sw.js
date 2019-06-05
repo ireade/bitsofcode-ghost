@@ -1,7 +1,6 @@
 const precacheVersion = 2;
 const precacheName = 'precache-v' + precacheVersion;
-
-var precacheFiles = [
+const precacheFiles = [
   "/assets/images/profile.png",
   "/assets/images/profile.webp",
   "/assets/built/offline.css",
@@ -10,7 +9,7 @@ var precacheFiles = [
 
 self.addEventListener('install', (e) => {
   console.log('[ServiceWorker] Installed');
-  console.log('test 1');
+  console.log('test 4');
 
   self.skipWaiting();
 
@@ -41,12 +40,10 @@ self.addEventListener('activate', (e) => {
 
 self.addEventListener('fetch', (e) => {
 
-  if (!e.request.url.includes(e.request.referrer)) {
-    e.respondWith(fetch(e.request));
-    return;
+  const requestURL = new URL(e.request.url);
+  if (!e.request.referrer.includes(requestURL.hostname)) {
+    return e.respondWith(fetch(e.request));
   }
-
-  console.log(e.request);
 
   e.respondWith(
     caches.match(e.request)
@@ -65,6 +62,6 @@ self.addEventListener('fetch', (e) => {
             if (isHTMLPage) return caches.match("/offline/");
           });
 
-      }) // end caches.match(e.request)
+    }) // end caches.match(e.request)
   ); // end e.respondWith
 });
