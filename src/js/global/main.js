@@ -8,6 +8,3 @@ var consoleMessages = [
 ];
 var consoleMessage = consoleMessages[Math.floor(Math.random() * consoleMessages.length)];
 console.log(consoleMessage);
-
-console.log("Testing...")
-

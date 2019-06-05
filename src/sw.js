@@ -9,8 +9,6 @@ const precacheFiles = [
 
 self.addEventListener('install', (e) => {
   console.log('[ServiceWorker] Installed');
-  console.log('test 4');
-
   self.skipWaiting();
 
   e.waitUntil(
