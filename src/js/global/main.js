@@ -1,7 +1,3 @@
-// Can't find the unminified source for this file :(
-
-"use strict";
-
 /* Console message */
 
 var consoleMessages = [
@@ -12,4 +8,6 @@ var consoleMessages = [
 ];
 var consoleMessage = consoleMessages[Math.floor(Math.random() * consoleMessages.length)];
 console.log(consoleMessage);
+
+console.log("Testing...")
 

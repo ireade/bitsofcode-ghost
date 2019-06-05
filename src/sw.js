@@ -10,6 +10,7 @@ var precacheFiles = [
 
 self.addEventListener('install', (e) => {
   console.log('[ServiceWorker] Installed');
+  console.log('test 1');
 
   self.skipWaiting();
 
@@ -44,6 +45,8 @@ self.addEventListener('fetch', (e) => {
     e.respondWith(fetch(e.request));
     return;
   }
+
+  console.log(e.request);
 
   e.respondWith(
     caches.match(e.request)
