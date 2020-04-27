@@ -14,25 +14,22 @@ function SearchGhost(options) {
 }
 
 SearchGhost.prototype.getPosts = function () {
-    function get(url) {
-        return new Promise(function (resolve, reject) {
-            var req = new XMLHttpRequest();
-            req.open('GET', url);
-            req.onload = function () {
-                req.status == 200 ? resolve(JSON.parse(req.response)) : reject(Error(req.statusText))
-            };
-            req.onerror = function () { reject(Error("Network Error")); };
-            req.send();
-        });
-    }
-
-    const url = ghost.url.api("posts", {
-        limit: "all",
-        include: "tags",
-        fields: "title,published_at,html,url,slug"
+    const api = new GhostContentAPI({
+      url: 'https://bitsofcode.ghost.io',
+      key: '78111c135ca4238e88a63c5f48',
+      version: "v3"
     });
-
-    return get(url).then((res) => this.posts = res.posts)
+    
+    return api.posts
+      .browse({
+        limit: 'all', 
+        include: 'tags',
+        fields: "title,published_at,html,url,slug"
+      })
+      .then((posts) => {
+        console.log(posts)
+        this.posts = posts
+      });
 };
 
 SearchGhost.prototype.searchPosts = function (query) {
